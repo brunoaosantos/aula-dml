@@ -4,6 +4,8 @@ import pt.ist.fenixframework.FenixFramework;
 
 public class Bank extends Bank_Base {
 
+	private int total;
+
 	public Bank(String name, String code) {
 		setName(name);
 		setCode(code);
@@ -24,6 +26,14 @@ public class Bank extends Bank_Base {
 			}
 		}
 		return null;
+	}
+
+	public int totalBalance(Bank bank) {
+		total = 0;
+		for (Account account : bank.getAccountSet()) {
+			total += account.getAmount();
+		}
+		return total;
 	}
 
 }
