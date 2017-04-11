@@ -10,6 +10,7 @@ import pt.ist.fenixframework.Atomic.TxMode;
 import pt.ist.fenixframework.FenixFramework;
 
 public class BankPersistenceTest {
+	private Account account;
 	@Test
 	public void success() {
 		atomicProcess();
@@ -18,7 +19,8 @@ public class BankPersistenceTest {
 
 	@Atomic(mode = TxMode.WRITE)
 	public void atomicProcess() {
-		new Bank("Money", "BK01");
+		Bank bank1 = new Bank("Money", "BK01");
+		account = new Account(bank1);
 	}
 
 	@Atomic(mode = TxMode.READ)
@@ -26,12 +28,16 @@ public class BankPersistenceTest {
 		Bank bank = Bank.getBankByCode("BK01");
 
 		assertEquals("Money", bank.getName());
+		assertEquals(1, bank.getAccountSet().size());
 	}
 
 	@After
 	@Atomic(mode = TxMode.WRITE)
 	public void tearDown() {
 		for (Bank bank : FenixFramework.getDomainRoot().getBankSet()) {
+			for (Account account : bank.getAccountSet()){
+				account.delete();
+			}
 			bank.delete();
 		}
 	}
