@@ -1,11 +1,20 @@
 package pt.ulisboa.tecnico.softeng.bank.domain;
 
+import pt.ist.fenixframework.FenixFramework;
 
 public class Account extends Account_Base{
-	private int value;
-	public Account(Bank bank){
+
+	public Account() {
+		super();
+	}
+	public Account(Bank bank, String IBAN){
+		init(bank, IBAN);
+	}
+
+	public void init(Bank bank, String IBAN){
 		setBank(bank);
-		this.value=0;
+		setIBAN(IBAN);
+		setBalance(0);
 	}
 
 	public void delete() {
@@ -16,7 +25,7 @@ public class Account extends Account_Base{
 
 	public void deposit(int amount) {
 		if(amount > 0) {
-			this.value += amount;
+			setBalance(getBalance() + amount);
 		}
 		else {
 			System.out.print("Invalid amount");
@@ -24,15 +33,12 @@ public class Account extends Account_Base{
 	}
 
 	public void withdraw(int amount) {
-		if(amount > 0 && amount <= this.value) {
-			this.value -= amount;
+		if(amount > 0 && amount <= getBalance()) {
+			setBalance(getBalance() - amount);
 		}
 		else {
 			System.out.print("Invalid amount");
 		}
 	}
 
-	public int getAmount() {
-		return this.value;
-	}
 }

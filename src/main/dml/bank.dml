@@ -6,6 +6,8 @@ class Bank {
 }
 
 class Account {
+    String IBAN;
+    int balance;
 }
 
 relation DomainRootHasBankApplication {
@@ -25,3 +27,5 @@ relation BankHasAccount {
 		multiplicity 0..*;
 	}
 }
+
+class SavingsAccount extends Account;
